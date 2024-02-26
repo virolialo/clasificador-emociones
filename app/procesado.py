@@ -1,13 +1,9 @@
 import re
-import nltk
 import pymongo
 from nltk.corpus import stopwords
 from nltk.stem import SnowballStemmer
 from nltk.stem import WordNetLemmatizer
-nltk.download('wordnet')
 
-nltk.download('punkt')
-nltk.download('stopwords')
 lemmatizer = WordNetLemmatizer()
 
 def connect_to_mongodb():
@@ -51,17 +47,16 @@ def filtrado(texto):
 def get_sentiment_from_documents():
     db = connect_to_mongodb()
     collection = db['raw_data']
-    documents = collection.find({},{"_id": 0, "sentiment": 1})
+    documents = collection.find({},{"_id": 0, "sentiment": 1}).limit(50)
     return [document['sentiment'] for document in documents]
 
 def get_content_from_documents():
     db = connect_to_mongodb()
     collection = db['raw_data']
-    documents = collection.find({}, {'_id': 0, 'content': 1}) # Proyección para excluir _id y solo incluir content
+    documents = collection.find({}, {'_id': 0, 'content': 1}).limit(50) # Proyección para excluir _id y solo incluir content
     return [document['content'] for document in documents]
 
-# Llamada a la función para obtener el contenido de todos los documentos
-content_list = get_content_from_documents()
+
 
 
 def apply_filtrado_to_content(content_list):
@@ -70,13 +65,6 @@ def apply_filtrado_to_content(content_list):
         filtered_content = filtrado(content)
         filtered_content_list.append(filtered_content)
     return filtered_content_list
-
-# Obtener el contenido de todos los documentos
-content_list = get_content_from_documents()
-
-# Aplicar la función filtrado al contenido
-filtered_content_list = apply_filtrado_to_content(content_list)
-combined_filtered_content = ' '.join(filtered_content_list)
 
 
 def frecuencia(lista): 
@@ -93,14 +81,13 @@ def frecuencia(lista):
     porcentajes = {palabra: (frecuencia / total_palabras) * 100 for palabra, frecuencia in frecuencias.items()}
     return porcentajes
 
-# Obtener el contenido de todos los documentos
-content_list = get_content_from_documents()
-
-# Aplicar la función filtrado al contenido
-filtered_content_list = apply_filtrado_to_content(content_list)
-combined_filtered_content = ' '.join(filtered_content_list)
-# Calcular la frecuencia de palabras en el contenido filtrado combinado
-diccionario_ordenado = dict(sorted(frecuencia(combined_filtered_content).items(), key=lambda item: item[1], reverse=True))
-vocabulario = list(diccionario_ordenado.keys())[:int((len(diccionario_ordenado)))]
-print("Numero total de palabras distintas:", len(vocabulario))
+def vocabulario():
+    content_list = get_content_from_documents()
+    # Aplicar la función filtrado al contenido
+    filtered_content_list = apply_filtrado_to_content(content_list)
+    combined_filtered_content = ' '.join(filtered_content_list)
+    # Calcular la frecuencia de palabras en el contenido filtrado combinado
+    diccionario_ordenado = dict(sorted(frecuencia(combined_filtered_content).items(), key=lambda item: item[1], reverse=True))
+    vocabulario = list(diccionario_ordenado.keys())[:int((len(diccionario_ordenado)))]
+    return print("Numero total de palabras distintas:", len(vocabulario))
 

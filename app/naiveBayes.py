@@ -1,6 +1,6 @@
 import numpy as np
 from sklearn.model_selection import StratifiedKFold
-from procesado import  get_content_from_documents, apply_filtrado_to_content, get_sentiment_from_documents
+from app.procesado import  get_content_from_documents, apply_filtrado_to_content, get_sentiment_from_documents
 from sklearn.metrics import classification_report
 import nltk
 def stratify(data, categoria, randm):
@@ -9,7 +9,7 @@ def stratify(data, categoria, randm):
     y = categoria
     
     # Crear una instancia de StratifiedKFold con 10 divisiones para asi poder obtener un 20% de indices de test, aleatoriedad y una semilla aleatoria
-    skf = StratifiedKFold(n_splits=10, shuffle=True, random_state=randm)
+    skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=randm)
     
     # Obtener el número de divisiones de StratifiedKFold
     skf.get_n_splits(X, y)
@@ -23,14 +23,13 @@ def stratify(data, categoria, randm):
     return ac
 
 
-content_list = get_content_from_documents()
-sentiment_list= get_sentiment_from_documents()
-filtered_content_list = apply_filtrado_to_content(content_list)
-separated_words_list = [[word for word in sentence.split()] for sentence in filtered_content_list]
-data = [(content, sentiment) for content, sentiment in zip(separated_words_list, sentiment_list)]
-
 
 def clasificador(data):
+    content_list = get_content_from_documents()
+    sentiment_list= get_sentiment_from_documents()
+    filtered_content_list = apply_filtrado_to_content(content_list)
+    separated_words_list = [[word for word in sentence.split()] for sentence in filtered_content_list]
+    data = [(content, sentiment) for content, sentiment in zip(separated_words_list, sentiment_list)]
     # Obtener los conjuntos de entrenamiento y prueba mediante la función stratify
     split_data = stratify(data, sentiment_list, 8)
     train_set = [data[index] for index in split_data[0]]
@@ -49,6 +48,5 @@ def clasificador(data):
     y_true = [category for features, category in test_data]
     y_pred = [classifier.classify(features) for features, category in test_data]
     # Imprimir el informe de clasificación utilizando classification_report de scikit-learn
-    print(classification_report(y_true, y_pred))
+    return classification_report(y_true, y_pred)
 
-clasificador(data)

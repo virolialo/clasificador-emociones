@@ -4,7 +4,7 @@ from sklearn.model_selection import GridSearchCV, train_test_split
 from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
-from procesado import get_content_from_documents, apply_filtrado_to_content, get_sentiment_from_documents
+from app.procesado import get_content_from_documents, apply_filtrado_to_content, get_sentiment_from_documents
 from imblearn.over_sampling import RandomOverSampler
 from gensim.models import Word2Vec
 
@@ -38,7 +38,7 @@ model.fit(X_train, y_train)
 def ouput_result(y_pred):
   print('Accuracy:', accuracy_score(y_test, y_pred))
   print('F1 Score:', f1_score(y_test, y_pred, average='weighted'))
-  print('Classification Report:\n', classification_report(y_test, y_pred))
+  return classification_report(y_test, y_pred)
 
 y_pred= model.predict(X_test)
 ouput_result(y_pred)
