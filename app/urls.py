@@ -7,6 +7,6 @@ urlpatterns = [
     path('resultGNB/', views.boton_viewGNB, name='boton_viewGNB'),
     path('resultDT/', views.boton_viewDT, name='boton_viewDT'),
     path('resultknn/', views.boton_viewKnn, name='boton_viewKnn'),
-
+    path('', views.pagina_principal, name='pagina_inicial'),
 
 ]

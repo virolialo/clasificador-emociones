@@ -7,9 +7,10 @@ from app.naiveBayes import clasificador
 from app.word2vec import *
 
 
+def pagina_principal(request):
+    return render(request, 'pagina_principal.html')
 
 def botones_modelos(request):
-   
     return render(request, 'models.html')
 
 def boton_viewNB(request):

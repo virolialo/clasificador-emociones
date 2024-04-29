@@ -38,7 +38,7 @@ model.fit(X_train, y_train)
 def ouput_result(y_pred):
   print('Accuracy:', accuracy_score(y_test, y_pred))
   print('F1 Score:', f1_score(y_test, y_pred, average='weighted'))
-  return classification_report(y_test, y_pred)
+  return classification_report(y_test, y_pred, output_dict=True)
 
 y_pred= model.predict(X_test)
 ouput_result(y_pred)

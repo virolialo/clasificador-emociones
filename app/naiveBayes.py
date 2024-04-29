@@ -48,5 +48,5 @@ def clasificador(data):
     y_true = [category for features, category in test_data]
     y_pred = [classifier.classify(features) for features, category in test_data]
     # Imprimir el informe de clasificación utilizando classification_report de scikit-learn
-    return classification_report(y_true, y_pred)
+    return classification_report(y_true, y_pred , output_dict=True)
 
