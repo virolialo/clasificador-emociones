@@ -13,7 +13,6 @@ content_list = get_content_from_documents()
 sentiment_list= get_sentiment_from_documents()
 filtered_content_list = apply_filtrado_to_content(content_list)
 
-
 # Crear una lista de oraciones tokenizadas a partir del conjunto de entrenamiento
 sentences = [text.split() for text in filtered_content_list]
 

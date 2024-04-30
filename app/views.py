@@ -6,7 +6,6 @@ from app.naiveBayes import clasificador
 
 from app.word2vec import *
 
-
 def pagina_principal(request):
     return render(request, 'pagina_principal.html')
 
@@ -29,14 +28,11 @@ def boton_viewNB(request):
     
     return render(request, 'models.html')
 
-
-
 def boton_viewGNB(request):
     if request.method == 'POST':
         content_list = get_content_from_documents()
         sentiment_list= get_sentiment_from_documents()
         filtered_content_list = apply_filtrado_to_content(content_list)
-
 
         # Crear una lista de oraciones tokenizadas a partir del conjunto de entrenamiento
         sentences = [text.split() for text in filtered_content_list]
@@ -58,8 +54,7 @@ def boton_viewGNB(request):
         # Crear una instancia del clasificador y entrenarlo con los vectores de texto y etiquetas de entrenamiento
         model = GaussianNB()
         model.fit(X_train, y_train)
-        
-
+    
         y_pred= model.predict(X_test)
         result_report= ouput_result(y_pred)
 
@@ -74,7 +69,6 @@ def boton_viewDT(request):
         content_list = get_content_from_documents()
         sentiment_list= get_sentiment_from_documents()
         filtered_content_list = apply_filtrado_to_content(content_list)
-
 
         # Crear una lista de oraciones tokenizadas a partir del conjunto de entrenamiento
         sentences = [text.split() for text in filtered_content_list]
@@ -111,7 +105,6 @@ def boton_viewKnn(request):
         content_list = get_content_from_documents()
         sentiment_list= get_sentiment_from_documents()
         filtered_content_list = apply_filtrado_to_content(content_list)
-
 
         # Crear una lista de oraciones tokenizadas a partir del conjunto de entrenamiento
         sentences = [text.split() for text in filtered_content_list]
